@@ -87,33 +87,71 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
+def average_rating_students(course, *students):
+    list1 = []
+    for student in students:
+        if student.grades.get(course):
+            list1.extend(student.grades[course])
+    return round(sum(list1) / len(list1), 1)
+
+def average_rating_lecturers(course, *lecturers):
+    list1 = []
+    for lecturer in lecturers:
+        if lecturer.grades.get(course):
+            list1.extend(lecturer.grades[course])
+    return round(sum(list1) / len(list1), 1)
+
 
 good_student = Student('Harry', 'Potter', 'male')
-good_student.courses_in_progress += ['Java', 'Python']
+good_student.courses_in_progress += ['Java', 'Python', 'C#']
 good_student.finished_courses += ['C++']
 
+best_student = Student('Hermione', 'Granger', 'female')
+best_student.courses_in_progress += ['Java', 'Python', 'Git', 'C++']
+best_student.finished_courses += ['C#', 'Ruby']
 
-cool_mentor = Reviewer('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python', 'Java']
+cool_mentor = Reviewer('Albus', 'Dumbledore')
+cool_mentor.courses_attached += ['Python', 'Java', 'Git', 'Ruby', 'C++']
 
-cool_mentor.rate_hw(good_student, 'Python', 10)
-cool_mentor.rate_hw(good_student, 'Python', 10)
-cool_mentor.rate_hw(good_student, 'Java', 9)
+black_mentor = Reviewer('Severus', 'Snape')
+black_mentor.courses_attached += ['C#']
+
+cool_mentor.rate_hw(good_student, 'Python', 8)
+cool_mentor.rate_hw(good_student, 'C++', 7)
+black_mentor.rate_hw(good_student, 'C#', 8)
+
+cool_mentor.rate_hw(best_student, 'Python', 10)
+cool_mentor.rate_hw(best_student, 'Git', 10)
+cool_mentor.rate_hw(best_student, 'Java', 10)
+black_mentor.rate_hw(best_student, 'C#', 10)
 
 print(good_student.grades)
+print(best_student.grades)
 
 best_lecturer = Lecturer('Minerva', 'McGonagall')
-best_lecturer.courses_attached += ['Java', 'Python']
+best_lecturer.courses_attached += ['Java', 'Python', 'C++']
+
+good_lecturer = Lecturer('Madam', 'Trick')
+good_lecturer.courses_attached += ['C#', 'Ruby', 'Git']
 
 good_student.rate_lect(best_lecturer, 'Java', 8)
-good_student.rate_lect(best_lecturer, 'Python', 9)
-good_student.rate_lect(best_lecturer, 'Python', 10)
+good_student.rate_lect(best_lecturer, 'C++', 9)
+best_student.rate_lect(best_lecturer, 'Python', 10)
+
+good_student.rate_lect(good_lecturer, 'C#', 6)
+good_student.rate_lect(good_lecturer, 'Git', 9)
+best_student.rate_lect(good_lecturer, 'Ruby', 10)
 
 print(best_lecturer.grades)
+print(good_lecturer.grades)
 
 print(f'Проверяющий: {cool_mentor}')
 print(f'Лектор: {best_lecturer}')
 print(f'Студент: {good_student}')
+print(f'Студент: {best_student}')
 
 print(good_student < best_lecturer)
+course = 'C#'
+print(average_rating_students(course, good_student, best_student))
+print(average_rating_lecturers(course, best_lecturer, good_lecturer))
 
